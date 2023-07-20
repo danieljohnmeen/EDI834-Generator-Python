@@ -77,17 +77,20 @@ def generate_edi_for_person(data, ins_code):
         if data['MedicareReasonCode'] != '' and math.isnan(data['MedicareReasonCode']) == False:
             data_medicare_status_code = str(data_medicare_status_code) + '>' + str(int(data['MedicareReasonCode']))
     except KeyError:
+        print(f"Missing Field: MedicareReasonCode")
         data_medicare_status_code = data_medicare_status_code
     try:
         student_status_code_from_data = data['StudentStatus']
         student_status_code = get_student_status_code(student_status_code_from_data)
     except KeyError:
+        print(f"Missing Field: StudentStatus")
         student_status_code = 'N'
 
     try:
         benefit_status_code = data['BenefitStatusCode']
         benefit_status_code = str.upper(convert_to_lenth_str(benefit_status_code, 1))
     except KeyError:
+        print(f"Missing Field: BenefitStatusCode")
         benefit_status_code = 'A'
     ins_seg_array = [
         'INS',                                      # Segment Name
