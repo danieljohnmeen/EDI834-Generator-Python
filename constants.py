@@ -45,3 +45,4 @@ N1_EMPLOYER_ID_NUMBER               = '24'
 N1_CODE_BY_ORGNIZATION              = '94'
 N1_FEDERAL_ID_NUMBER                = 'FI'
 N1_CENTERS_FOR_MEDICARE             = 'XV'
+# Define Constants variable for the INS Segment

@@ -1,13 +1,13 @@
-EmployeeId,ReasonCode,EmployeeStatus,MedicarePlanCode,LastName,FirstName,SocialSecurityNumber,Address1,City,State,Zip,BirthDate,Gender,CoverageLevel,CoverageEffectiveFrom,CoverageEffectiveTo,DateHired,TerminationDate,BenefitType,Benefit Plan Provider Name
-123,1,Full-Time,A,Smith,James,171-19-1919,100 Main St,CityA,StateA,11111,1/1/1980,Male,Individual,1/1/2023,12/31/2023,1/1/2022,5/31/2025,Medical,Blue Cross Blue Shield of Tennessee
-124,2,Full-Time,B,Johnson,John,222-22-2222,200 Oak St,CityB,StateB,22222,2/2/1981,Female,Family,2/2/2023,12/31/2023,2/2/2022,5/31/2025,Medical,Blue Cross Blue Shield of Tennessee
-125,3,Full-Time,C,Williams,Robert,333-33-3333,300 Pine St,CityC,StateC,33333,3/3/1982,Male,Individual,3/3/2023,12/31/2023,3/3/2022,5/31/2025,Medical,Blue Cross Blue Shield of Tennessee
-126,4,Full-Time,D,Jones,Michael,444-44-4444,400 Maple St,CityD,StateD,44444,4/4/1983,Female,Family,4/4/2023,12/31/2023,4/4/2022,5/31/2025,Dental,Blue Cross Blue Shield of Tennessee
-127,5,Full-Time,E,Brown,William,555-55-5555,500 Birch St,CityE,StateE,55555,5/5/1984,Male,Individual,5/5/2023,12/31/2023,5/5/2022,5/31/2025,Vision,Blue Cross Blue Shield of Tennessee
-128,1,Full-Time,A,Wilson,Sarah,191-19-1919,600 Elm St,CityF,StateF,66666,6/6/1985,Female,Family,6/6/2023,12/31/2023,6/6/2022,5/31/2025,Vision,Cigna
-128,1,Full-Time,A,Wilson,Sarah,191-19-1919,600 Elm St,CityF,StateF,66666,6/6/1985,Female,Family,6/6/2023,12/31/2023,6/6/2022,5/31/2025,Dental,Cigna
-128,1,Full-Time,A,Wilson,Sarah,191-19-1919,600 Elm St,CityF,StateF,66666,6/6/1985,Female,Family,6/6/2023,12/31/2023,6/6/2022,5/31/2025,Medical,Cigna
-129,2,Full-Time,B,Taylor,Emily,777-77-7777,700 Oakwood St,CityG,StateG,77777,7/7/1986,Male,Individual,7/7/2023,12/31/2023,7/7/2022,5/31/2025,Vision,Cigna
-130,3,Full-Time,C,Miller,David,888-88-8888,800 Maplewood St,CityH,StateH,88888,8/8/1987,Female,Family,8/8/2023,12/31/2023,8/8/2022,5/31/2025,Medical,Cigna
-131,4,Full-Time,D,Anderson,Olivia,999-99-9999,900 Pineview St,CityI,StateI,99999,9/9/1988,Male,Individual,9/9/2023,12/31/2023,9/9/2022,5/31/2025,Medical,Cigna
-132,5,Full-Time,E,Walker,Emma,123-45-6789,1000 Cedar Ave,CityJ,StateJ,12345,10/10/1989,Female,Family,10/10/2023,12/31/2023,10/10/2022,5/31/2025,Medical,Cigna
+EmployeeId,ReasonCode,EmployeeStatus,MedicarePlanCode,LastName,FirstName,SocialSecurityNumber,Address1,City,State,Zip,BirthDate,Gender,CoverageLevel,CoverageEffectiveFrom,CoverageEffectiveTo,DateHired,TerminationDate,BenefitType,Benefit Plan Provider Name,BenefitStatusCode,MedicareReasonCode
+123,1,FT,A,Smith,James,171-19-1919,100 Main St,CityA,StateA,11111,1/1/1980,Male,Individual,1/1/2023,12/31/2023,1/1/2022,5/31/2025,Medical,Blue Cross Blue Shield of Tennessee,A,0
+124,2,AC,B,Johnson,John,222-22-2222,200 Oak St,CityB,StateB,22222,2/2/1981,Female,Family,2/2/2023,12/31/2023,2/2/2022,5/31/2025,Medical,Blue Cross Blue Shield of Tennessee,C,1
+125,3,AO,C,Williams,Robert,333-33-3333,300 Pine St,CityC,StateC,33333,3/3/1982,Male,Individual,3/3/2023,12/31/2023,3/3/2022,5/31/2025,Medical,Blue Cross Blue Shield of Tennessee,S,2
+126,4,AU,D,Jones,Michael,444-44-4444,400 Maple St,CityD,StateD,44444,4/4/1983,Female,Family,4/4/2023,12/31/2023,4/4/2022,5/31/2025,Dental,Blue Cross Blue Shield of Tennessee,T,0
+127,5,FT,E,Brown,William,555-55-5555,500 Birch St,CityE,StateE,55555,5/5/1984,Male,Individual,5/5/2023,12/31/2023,5/5/2022,5/31/2025,Vision,Blue Cross Blue Shield of Tennessee,A,1
+128,1,FT,A,Wilson,Sarah,191-19-1919,600 Elm St,CityF,StateF,66666,6/6/1985,Female,Family,6/6/2023,12/31/2023,6/6/2022,5/31/2025,Vision,Cigna,C,2
+128,1,FT,A,Wilson,Sarah,191-19-1919,600 Elm St,CityF,StateF,66666,6/6/1985,Female,Family,6/6/2023,12/31/2023,6/6/2022,5/31/2025,Dental,Cigna,S,
+128,1,FT,A,Wilson,Sarah,191-19-1919,600 Elm St,CityF,StateF,66666,6/6/1985,Female,Family,6/6/2023,12/31/2023,6/6/2022,5/31/2025,Medical,Cigna,T,
+129,2,FT,B,Taylor,Emily,777-77-7777,700 Oakwood St,CityG,StateG,77777,7/7/1986,Male,Individual,7/7/2023,12/31/2023,7/7/2022,5/31/2025,Vision,Cigna,A,
+130,3,FT,C,Miller,David,888-88-8888,800 Maplewood St,CityH,StateH,88888,8/8/1987,Female,Family,8/8/2023,12/31/2023,8/8/2022,5/31/2025,Medical,Cigna,C,
+131,4,FT,D,Anderson,Olivia,999-99-9999,900 Pineview St,CityI,StateI,99999,9/9/1988,Male,Individual,9/9/2023,12/31/2023,9/9/2022,5/31/2025,Medical,Cigna,S,
+132,5,FT,E,Walker,Emma,123-45-6789,1000 Cedar Ave,CityJ,StateJ,12345,10/10/1989,Female,Family,10/10/2023,12/31/2023,10/10/2022,5/31/2025,Medical,Cigna,T,

@@ -1,7 +1,7 @@
 import pandas as pd
 from constants import *
 # Load functions
-from functions import generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1
+from functions import generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -50,6 +50,32 @@ for provider_name, enrollee_group in grouped:
     print(f"N1_PAYER: {n1_payer_segment}")
     for _, enrollee in enrollee_group.iterrows():
         # print(f"Enrollee: {enrollee[FIRST_NAME_COL]} {enrollee[LAST_NAME_COL]}")
+
+        # Generate Ins Segment for Enrollee
+        enrollee_medicare_status_code = enrollee['MedicarePlanCode']
+        if enrollee['MedicareReasonCode'] != '':
+            enrollee_medicare_status_code = str(enrollee_medicare_status_code) + '>' + str(int(enrollee['MedicareReasonCode']))
+        ins_seg_array = [
+            'INS',                                  # Segment Name
+            'Y',                                    # Member Indicator (Y/N)
+            '18',                                   # Individual Relationship Code
+            '030',                                  # Maintenance Type Code
+            str(enrollee['ReasonCode']),            # Maintenance Reason Code
+            str(enrollee['BenefitStatusCode']),     # Benefit Status Code
+            str(enrollee_medicare_status_code),     # Medicare Status Code
+            '',                                     # Consolidated Omnibus Budget Reconciliation Act (COBRA) Qualifying Event Code
+            str(enrollee['EmployeeStatus']),        # Employment Status Code
+            '',                             # Student Status Code
+            '',                             # Handicap Indicator
+            'D8',                           # Date Time Period Format Qualifier
+            '',                             # Member Individual Death Date
+            'U',                            # Confidentiality Code (R: Restricted Access, U: Unrestricted Access)
+            '',                             # Birth Sequence Number (Min 1, Max 9)
+        ]
+
+        enrollee_ins_segment = generate_segment_from_array(ins_seg_array)
+        print(f"Enrollee Ins Segment: {enrollee_ins_segment}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
+
         for _, dependent in enrollee_dependents.iterrows():
             print(f"\tDependent: {dependent[FIRST_NAME_COL]} {dependent[LAST_NAME_COL]}")

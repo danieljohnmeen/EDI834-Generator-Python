@@ -21,3 +21,6 @@ def generate_BGN(trans_set_purpurse_code, trans_set_ref_num, original_trans_set_
 def generate_N1(entity_id_code, name, id_code_qualifier,identifier):
     n1_segment = f"N1*{entity_id_code}*{name}*{id_code_qualifier}*{identifier}~"
     return n1_segment
+def generate_segment_from_array(data_array):
+    result_segment = "*".join(data_array) + "~"
+    return result_segment
