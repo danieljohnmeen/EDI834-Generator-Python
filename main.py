@@ -105,6 +105,15 @@ for provider_name, enrollee_group in grouped:
         ]
         enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
         print(f"DTP Segments for Employment Started: {enrollee_ref_segment}")
+        # DTP Segments for Employment End
+        ref_seg_array = [
+            'DTP',                                      # Segment Name
+            '337',                                      # Date Time Qualifier (337: Employment End)
+            'D8',                                       # Date Expressed in Format CCYYMMDD
+            convert_date_to_ccyymmdd(enrollee['TerminationDate'])  # Status Information Effective Date
+        ]
+        enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
+        print(f"DTP Segments for Employment Started: {enrollee_ref_segment}")
 
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
