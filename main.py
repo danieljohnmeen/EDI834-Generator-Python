@@ -3,7 +3,7 @@ import pandas as pd
 from constants import *
 import math
 # Load functions
-from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array, convert_to_2_length, convert_to_gender_code
+from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array, convert_to_2_length, convert_to_gender_code, convert_to_lenth_str
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -167,11 +167,46 @@ for provider_name, enrollee_group in grouped:
             '',                                             # DMG-09
             '',                                             # Code List Qualifier Code
             ''                                              # Race or Ethnicit Collection Code
-
         ]
         enrollee_dmg_segment = generate_segment_from_array(dmg_seg_array)
         print(f"DMG Segment: {enrollee_dmg_segment}")
 
+
+        # HD Segment
+        hd_seg_array = [
+            'HD',                                           # Segment Name
+            '001',                                          # Maintenance Type Code
+            '',
+            'AH',                                           # Insurance Line Code
+            '',                                             # Plan Coverage Description
+            str.upper(convert_to_lenth_str(enrollee['CoverageLevel'], 3))   ,# Coverage Level Code
+            '',                                             # 
+            '',                                             # 
+            '',                                             # 
+            'N'                                             # Late Enrollment Indicator
+        ]
+        enrollee_hd_segment = generate_segment_from_array(hd_seg_array)
+        print(f"HD Segment: {enrollee_hd_segment}")
+
+
+        # DTP Segments for Health Coverage Dates
+        dtp_seg_array = [
+            'DTP',                                      # Segment Name
+            '348',                                      # Date Time Qualifier (336: Employment Begin)
+            'D8',                                       # Date Expressed in Format CCYYMMDD
+            convert_date_to_ccyymmdd(enrollee['CoverageEffectiveFrom'])  # Status Information Effective Date
+        ]
+        enrollee_dtp_segment = generate_segment_from_array(dtp_seg_array)
+        print(f"DTP Segments for Health Coverage Dates: {enrollee_dtp_segment}")
+        # DTP Segments for Health Coverage Dates
+        dtp_seg_array = [
+            'DTP',                                      # Segment Name
+            '349',                                      # Date Time Qualifier (337: Employment End)
+            'D8',                                       # Date Expressed in Format CCYYMMDD
+            convert_date_to_ccyymmdd(enrollee['CoverageEffectiveTo'])  # Status Information Effective Date
+        ]
+        enrollee_dtp_segment = generate_segment_from_array(dtp_seg_array)
+        print(f"DTP Segments for Health Coverage Dates: {enrollee_dtp_segment}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
         for _, dependent in enrollee_dependents.iterrows():

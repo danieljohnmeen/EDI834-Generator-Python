@@ -22,6 +22,15 @@ def convert_to_2_length(input_string):
         return input_string.zfill(2)
     else:
         return input_string
+def convert_to_lenth_str(input_string, str_length):
+    # Truncate the string to 2 characters if it's longer
+    if len(input_string) > str_length:
+        return input_string[:str_length]
+    # Pad the string with leading zeros to make it 2 characters long
+    elif len(input_string) < str_length:
+        return input_string.zfill(str_length)
+    else:
+        return input_string
 def generate_ISA(control_num):
     current_date = datetime.datetime.now().strftime("%y%m%d")  # YYMMDD
     current_time = datetime.datetime.now().strftime("%H%M")
