@@ -3,7 +3,7 @@ import pandas as pd
 from constants import *
 import math
 # Load functions
-from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array, convert_to_2_length
+from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array, convert_to_2_length, convert_to_gender_code
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -151,6 +151,27 @@ for provider_name, enrollee_group in grouped:
         ]
         enrollee_n4_segment = generate_segment_from_array(n4_seg_array)
         print(f"N4 Segment: {enrollee_n4_segment}")
+
+
+        # DMG Segment
+        dmg_seg_array = [
+            'DMG',                                          # Segment Name
+            'D8',                                           # Date Time Period Format Qualifier
+            convert_date_to_ccyymmdd(enrollee['BirthDate']),                           # Member Birth Date
+            convert_to_gender_code(enrollee['Gender']),     # Gender Code
+            '',                                             # Marital Status Code
+            '',                                             # Composite Race or Ethnicity Information
+            '',                                             # Citizenship Status Code
+            '',                                             # DMG-07
+            '',                                             # DMG-08
+            '',                                             # DMG-09
+            '',                                             # Code List Qualifier Code
+            ''                                              # Race or Ethnicit Collection Code
+
+        ]
+        enrollee_dmg_segment = generate_segment_from_array(dmg_seg_array)
+        print(f"DMG Segment: {enrollee_dmg_segment}")
+
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
         for _, dependent in enrollee_dependents.iterrows():
