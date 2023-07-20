@@ -6,6 +6,16 @@ def convert_date_to_ccyymmdd(date):
         date_obj = datetime.datetime.strptime(date, "%m/%d/%Y")
         return date_obj.strftime("%Y%m%d")
     return ''
+
+def convert_to_2_length(input_string):
+    # Truncate the string to 2 characters if it's longer
+    if len(input_string) > 2:
+        return input_string[:2]
+    # Pad the string with leading zeros to make it 2 characters long
+    elif len(input_string) < 2:
+        return input_string.zfill(2)
+    else:
+        return input_string
 def generate_ISA(control_num):
     current_date = datetime.datetime.now().strftime("%y%m%d")  # YYMMDD
     current_time = datetime.datetime.now().strftime("%H%M")

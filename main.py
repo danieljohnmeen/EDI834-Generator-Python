@@ -3,7 +3,7 @@ import pandas as pd
 from constants import *
 import math
 # Load functions
-from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array
+from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array, convert_to_2_length
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -131,6 +131,26 @@ for provider_name, enrollee_group in grouped:
         ]
         enrollee_nm1_segment = generate_segment_from_array(nm1_seg_array)
         print(f"NM1 Segment: {enrollee_nm1_segment}")
+
+
+
+        # N3 Segment
+        n3_seg_array = [
+            'N3',                                       # Segment Name
+            enrollee['Address1']                        # Member Address Line
+        ]
+        enrollee_n3_segment = generate_segment_from_array(n3_seg_array)
+        print(f"N3 Segment: {enrollee_n3_segment}")
+        # N4 Segment
+        n4_seg_array = [
+            'N4',                                       # Segment Name
+            enrollee['City'],                           # Member City Name
+            convert_to_2_length(enrollee['State']),     # Member State Code (Min/Max 2)
+            str(enrollee['Zip']),                       # Member Postal Zone or Zip Code
+            'US'                                        # Country Code
+        ]
+        enrollee_n4_segment = generate_segment_from_array(n4_seg_array)
+        print(f"N4 Segment: {enrollee_n4_segment}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
         for _, dependent in enrollee_dependents.iterrows():
