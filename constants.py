@@ -25,3 +25,6 @@ GS_APP_RECEIV_CODE                  = 'RECEIVE_CODE'            # Application Re
 GS_FUN_IDENTI_CODE                  = 'HP'                      # Functional Identifiere Code (BE: Benefit Enrollment and Maintenance (834))
 GS_RES_AGENCY_CODE                  = 'X'                       # Responsible Agency Code (T: TDCC, X: Accredited Standards Committee X12)
 GS_VER_REL_IND_IDENTI_CODE          = '005010X220A1'            # Version / Release / Industry Identifier Code (005010X220A1: ANSI ASC X12 Benefit Enrollment and Maintenance (834) through June 2010)
+# Define Constants variable for the ST Segment
+ST_TRANS_SET_ID_CODE                = '834'                     # Transaction Set Identifier Code (834: Benefit Enrollment and Maintenance)
+ST_IMP_CONV_REFER                   = '005010X220A1'            # Implementation Convention Reference

@@ -1,7 +1,7 @@
 import pandas as pd
 from constants import *
 # Load functions
-from functions import generate_ISA, generate_GS
+from functions import generate_ISA, generate_GS, generate_ST
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -18,6 +18,8 @@ for provider_name, enrollee_group in grouped:
     print(f"ISA SEGMENT: {isa_segment}")
     gs_segment = generate_GS(unique_control_num)
     print(f"GS SEGMENT: {gs_segment}")
+    st_segment = generate_ST(unique_control_num)
+    print(f"ST SEGMENT: {st_segment}")
     for _, enrollee in enrollee_group.iterrows():
         # print(f"Enrollee: {enrollee[FIRST_NAME_COL]} {enrollee[LAST_NAME_COL]}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
