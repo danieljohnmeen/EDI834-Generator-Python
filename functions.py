@@ -1,5 +1,11 @@
 import datetime
+import pandas as pd
 from constants import *
+def convert_date_to_ccyymmdd(date):
+    if pd.notnull(date):
+        date_obj = datetime.datetime.strptime(date, "%m/%d/%Y")
+        return date_obj.strftime("%Y%m%d")
+    return ''
 def generate_ISA(control_num):
     current_date = datetime.datetime.now().strftime("%y%m%d")  # YYMMDD
     current_time = datetime.datetime.now().strftime("%H%M")

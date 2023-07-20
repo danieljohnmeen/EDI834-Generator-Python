@@ -1,7 +1,8 @@
 import pandas as pd
 from constants import *
+import math
 # Load functions
-from functions import generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array
+from functions import convert_date_to_ccyymmdd, generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1, generate_segment_from_array
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -53,7 +54,7 @@ for provider_name, enrollee_group in grouped:
 
         # Generate Ins Segment for Enrollee
         enrollee_medicare_status_code = enrollee['MedicarePlanCode']
-        if enrollee['MedicareReasonCode'] != '':
+        if enrollee['MedicareReasonCode'] != '' and math.isnan(enrollee['MedicareReasonCode']) == False:
             enrollee_medicare_status_code = str(enrollee_medicare_status_code) + '>' + str(int(enrollee['MedicareReasonCode']))
         ins_seg_array = [
             'INS',                                  # Segment Name
@@ -94,6 +95,16 @@ for provider_name, enrollee_group in grouped:
         enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
         print(f"Member Policy Number: {enrollee_ref_segment}")
 
+
+        # DTP Segments for Employment Started
+        ref_seg_array = [
+            'DTP',                                      # Segment Name
+            '336',                                      # Date Time Qualifier (336: Employment Begin)
+            'D8',                                       # Date Expressed in Format CCYYMMDD
+            convert_date_to_ccyymmdd(enrollee['DateHired'])  # Status Information Effective Date
+        ]
+        enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
+        print(f"DTP Segments for Employment Started: {enrollee_ref_segment}")
 
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
