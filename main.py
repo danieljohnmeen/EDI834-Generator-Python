@@ -14,18 +14,31 @@ for provider_name, enrollee_group in grouped:
     # print(f"Provider Name: {provider_name}")
     # EDI Document Data List for Each Provider
     edi_provider_documents = []
+
+    # ISA SEGMENT
     isa_segment = generate_ISA(unique_control_num)
     print(f"ISA SEGMENT: {isa_segment}")
+    # END ISA SEGMENT
+
+    # GS SEGMENT
     gs_segment = generate_GS(unique_control_num)
     print(f"GS SEGMENT: {gs_segment}")
+    # END GS SEGMENT
+
+    # ST SEGMENT
     st_segment = generate_ST(unique_control_num)
     print(f"ST SEGMENT: {st_segment}")
-    # Pass the params for the BGN Segment here
+    # END ST SEGMENT
+
+    # BGN SEGMENT
+    ## Pass the params for the BGN Segment here
     trans_set_ref_num = 'TRANS_SET_REF_NUM'
     original_trans_set_ref_num = 'ORIGIN_TRANS_SET_REF_NUM'
     bgn_segment = generate_BGN(BGN_TRANS_PURP_CODE_ORIGIN, trans_set_ref_num, original_trans_set_ref_num)
     print(f"BGN SEGMENT: {bgn_segment}")
     #End BGN SEGMENT
+
+
     for _, enrollee in enrollee_group.iterrows():
         # print(f"Enrollee: {enrollee[FIRST_NAME_COL]} {enrollee[LAST_NAME_COL]}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
