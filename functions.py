@@ -62,28 +62,43 @@ def get_student_status_code(status_code):
         return 'F'
     else:
         return 'N'
-    
+def get_employment_status_code(status_code):
+    if status_code == 'Full-Time':
+        return 'FT'
+    elif status_code == 'Active':
+        return 'AC'
+    else:
+        return str.upper(convert_to_2_length(status_code))
 def generate_edi_for_person(data, ins_code):
     segments = []
     # Generate Ins Segment
     data_medicare_status_code = data['MedicarePlanCode']
-    if data['MedicareReasonCode'] != '' and math.isnan(data['MedicareReasonCode']) == False:
-        data_medicare_status_code = str(data_medicare_status_code) + '>' + str(int(data['MedicareReasonCode']))
+    try:
+        if data['MedicareReasonCode'] != '' and math.isnan(data['MedicareReasonCode']) == False:
+            data_medicare_status_code = str(data_medicare_status_code) + '>' + str(int(data['MedicareReasonCode']))
+    except KeyError:
+        data_medicare_status_code = data_medicare_status_code
     try:
         student_status_code_from_data = data['StudentStatus']
         student_status_code = get_student_status_code(student_status_code_from_data)
     except KeyError:
         student_status_code = 'N'
+
+    try:
+        benefit_status_code = data['BenefitStatusCode']
+        benefit_status_code = str.upper(convert_to_lenth_str(benefit_status_code, 1))
+    except KeyError:
+        benefit_status_code = 'A'
     ins_seg_array = [
         'INS',                                      # Segment Name
         'Y',                                        # Member Indicator (Y/N)
         ins_code,                                   # Individual Relationship Code
         '030',                                      # Maintenance Type Code
         str(data['ReasonCode']).zfill(2),           # Maintenance Reason Code
-        str(data['BenefitStatusCode']),             # Benefit Status Code
+        str(benefit_status_code),                   # Benefit Status Code
         str(data_medicare_status_code),             # Medicare Status Code
         '',                                         # Consolidated Omnibus Budget Reconciliation Act (COBRA) Qualifying Event Code
-        str(data['EmployeeStatus']),                # Employment Status Code
+        get_employment_status_code(data['EmployeeStatus']),                # Employment Status Code
         student_status_code,                        # Student Status Code
         '',                             # Handicap Indicator
         '',                             # Date Time Period Format Qualifier  (Empty if no value for member individual death date)
