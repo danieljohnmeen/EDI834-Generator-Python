@@ -28,3 +28,11 @@ GS_VER_REL_IND_IDENTI_CODE          = '005010X220A1'            # Version / Rele
 # Define Constants variable for the ST Segment
 ST_TRANS_SET_ID_CODE                = '834'                     # Transaction Set Identifier Code (834: Benefit Enrollment and Maintenance)
 ST_IMP_CONV_REFER                   = '005010X220A1'            # Implementation Convention Reference
+# Define Constants variable for the BGN Segment
+## Transaction Set Purpose Code (OO: Original, 15: Resubmission, 22: Information Copy)
+BGN_TRANS_PURP_CODE_ORIGIN          = '00'
+BGN_TRANS_PURP_CODE_RE_SUB          = '15'
+BGN_TRANS_PURP_CODE_INFOCP          = '22'
+BGN_TIMEZONE_CODE                   = '01'                      # Time Zone Code
+BGN_ACTION_CODE                     = '2'                       # Action Code (2: Change/Update, 4: Verify, RX: Replace)
+BGN_07                              = ''                        # BGN07: Undefined

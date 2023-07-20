@@ -11,6 +11,10 @@ def generate_GS(control_num):
     gs_segment = f"GS*{GS_FUN_IDENTI_CODE}*{GS_APP_SENDER_CODE}*{GS_APP_RECEIV_CODE}*{current_date}*{current_time}*{control_num}*{GS_RES_AGENCY_CODE}*{GS_VER_REL_IND_IDENTI_CODE}~"
     return gs_segment
 def generate_ST(control_num):
-    current_date = datetime.datetime.now().strftime("%Y%m%d")  # CCYYMMDD
     st_segment = f"ST*{ST_TRANS_SET_ID_CODE}*{control_num:09}*{ST_IMP_CONV_REFER}~"
     return st_segment
+def generate_BGN(trans_set_purpurse_code, trans_set_ref_num, original_trans_set_ref_num):
+    current_date = datetime.datetime.now().strftime("%Y%m%d")  # CCYYMMDD
+    current_time = datetime.datetime.now().strftime("%H%M")
+    bgn_segment = f"BGN*{trans_set_purpurse_code}*{trans_set_ref_num}*{current_date}*{current_time}*{BGN_TIMEZONE_CODE}*{original_trans_set_ref_num}*{BGN_07}*{BGN_ACTION_CODE}~"
+    return bgn_segment
