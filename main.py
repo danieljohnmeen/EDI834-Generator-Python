@@ -1,3 +1,4 @@
+import re
 import pandas as pd
 from constants import *
 import math
@@ -61,14 +62,14 @@ for provider_name, enrollee_group in grouped:
             'Y',                                    # Member Indicator (Y/N)
             '18',                                   # Individual Relationship Code
             '030',                                  # Maintenance Type Code
-            str(enrollee['ReasonCode']),            # Maintenance Reason Code
+            str(enrollee['ReasonCode']).zfill(2),   # Maintenance Reason Code
             str(enrollee['BenefitStatusCode']),     # Benefit Status Code
             str(enrollee_medicare_status_code),     # Medicare Status Code
             '',                                     # Consolidated Omnibus Budget Reconciliation Act (COBRA) Qualifying Event Code
             str(enrollee['EmployeeStatus']),        # Employment Status Code
             '',                             # Student Status Code
             '',                             # Handicap Indicator
-            'D8',                           # Date Time Period Format Qualifier
+            '',                             # Date Time Period Format Qualifier  (Empty if no value for member individual death date)
             '',                             # Member Individual Death Date
             'U',                            # Confidentiality Code (R: Restricted Access, U: Unrestricted Access)
             '',                             # Birth Sequence Number (Min 1, Max 9)
@@ -97,24 +98,39 @@ for provider_name, enrollee_group in grouped:
 
 
         # DTP Segments for Employment Started
-        ref_seg_array = [
+        dtp_seg_array = [
             'DTP',                                      # Segment Name
             '336',                                      # Date Time Qualifier (336: Employment Begin)
             'D8',                                       # Date Expressed in Format CCYYMMDD
             convert_date_to_ccyymmdd(enrollee['DateHired'])  # Status Information Effective Date
         ]
-        enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
-        print(f"DTP Segments for Employment Started: {enrollee_ref_segment}")
+        enrollee_dtp_segment = generate_segment_from_array(dtp_seg_array)
+        print(f"DTP Segments for Employment Started: {enrollee_dtp_segment}")
         # DTP Segments for Employment End
-        ref_seg_array = [
+        dtp_seg_array = [
             'DTP',                                      # Segment Name
             '337',                                      # Date Time Qualifier (337: Employment End)
             'D8',                                       # Date Expressed in Format CCYYMMDD
             convert_date_to_ccyymmdd(enrollee['TerminationDate'])  # Status Information Effective Date
         ]
-        enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
-        print(f"DTP Segments for Employment Started: {enrollee_ref_segment}")
+        enrollee_dtp_segment = generate_segment_from_array(dtp_seg_array)
+        print(f"DTP Segments for Employment End: {enrollee_dtp_segment}")
 
+        # NM1 Segment
+        nm1_seg_array = [
+            'NM1',                                      # Segment Name
+            '74',                                       # Entity Identifier Code (74: Corrected Insured, IL: Insured or Subscriber)
+            '1',                                        # Entity Type Qualifier
+            enrollee['LastName'],                       # Member Last Name
+            enrollee['FirstName'],                      # Member First Name
+            '',                                         # Member Middle Name
+            '',                                         # Member Name Prefix,
+            '',                                         # Member Name Suffix,
+            '34',                                       # Identification Code Qualifier (34: SSN, ZZ: Mutually Defined)
+            re.sub(r'[-]', '', enrollee['SocialSecurityNumber']) # Member Identifier
+        ]
+        enrollee_nm1_segment = generate_segment_from_array(nm1_seg_array)
+        print(f"NM1 Segment: {enrollee_nm1_segment}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
         for _, dependent in enrollee_dependents.iterrows():
