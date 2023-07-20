@@ -1,7 +1,7 @@
 import pandas as pd
 from constants import *
 # Load functions
-from functions import generate_ISA, generate_GS, generate_ST, generate_BGN
+from functions import generate_ISA, generate_GS, generate_ST, generate_BGN, generate_N1
 # Load the data
 enrollees = pd.read_csv(ENROLLEE_CSV)
 dependents = pd.read_csv(DEPENDENT_CSV)
@@ -38,7 +38,16 @@ for provider_name, enrollee_group in grouped:
     print(f"BGN SEGMENT: {bgn_segment}")
     #End BGN SEGMENT
 
-
+    # N1 SEGMENTS for Sponsor and Payer
+    ## sponsor segment
+    sponser_name = 'LBMC Employment Partners LLC'
+    sponsor_id_number = 'XXX'   # Sponser Identifier: Code identifying a party or other code (Min 2, Max 80)
+    n1_sponsor_segment = generate_N1(N1_PLAN_SPONSOR_CODE, sponser_name, N1_FEDERAL_ID_NUMBER, sponsor_id_number)
+    print(f"N1_SPONSOR: {n1_sponsor_segment}")
+    ## payer segment
+    insurer_id_code = 'XXXX'
+    n1_payer_segment = generate_N1(N1_INSURER_CODE, provider_name, N1_FEDERAL_ID_NUMBER, insurer_id_code)
+    print(f"N1_PAYER: {n1_payer_segment}")
     for _, enrollee in enrollee_group.iterrows():
         # print(f"Enrollee: {enrollee[FIRST_NAME_COL]} {enrollee[LAST_NAME_COL]}")
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]

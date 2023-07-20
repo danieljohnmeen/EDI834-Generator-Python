@@ -18,3 +18,6 @@ def generate_BGN(trans_set_purpurse_code, trans_set_ref_num, original_trans_set_
     current_time = datetime.datetime.now().strftime("%H%M")
     bgn_segment = f"BGN*{trans_set_purpurse_code}*{trans_set_ref_num}*{current_date}*{current_time}*{BGN_TIMEZONE_CODE}*{original_trans_set_ref_num}*{BGN_07}*{BGN_ACTION_CODE}~"
     return bgn_segment
+def generate_N1(entity_id_code, name, id_code_qualifier,identifier):
+    n1_segment = f"N1*{entity_id_code}*{name}*{id_code_qualifier}*{identifier}~"
+    return n1_segment

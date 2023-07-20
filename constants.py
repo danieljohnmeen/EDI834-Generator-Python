@@ -36,3 +36,12 @@ BGN_TRANS_PURP_CODE_INFOCP          = '22'
 BGN_TIMEZONE_CODE                   = '01'                      # Time Zone Code
 BGN_ACTION_CODE                     = '2'                       # Action Code (2: Change/Update, 4: Verify, RX: Replace)
 BGN_07                              = ''                        # BGN07: Undefined
+# Define Constants variable for the N1 Segment
+## Entity Identifier Code
+N1_PLAN_SPONSOR_CODE                = 'P5'
+N1_INSURER_CODE                     = 'IN'
+## Identification Code Qualifier
+N1_EMPLOYER_ID_NUMBER               = '24'
+N1_CODE_BY_ORGNIZATION              = '94'
+N1_FEDERAL_ID_NUMBER                = 'FI'
+N1_CENTERS_FOR_MEDICARE             = 'XV'
