@@ -75,6 +75,26 @@ for provider_name, enrollee_group in grouped:
 
         enrollee_ins_segment = generate_segment_from_array(ins_seg_array)
         print(f"Enrollee Ins Segment: {enrollee_ins_segment}")
+
+
+        # REF Segments (Subscriber Identifier)
+        ref_seg_array = [
+            'REF',                                      # Segment Name
+            '0F',                                       # Reference Identification Qualifier
+            str(enrollee['EmployeeId'])                 # Subscriber Identifier
+        ]
+        enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
+        print(f"Enrollee REF Segment: {enrollee_ref_segment}")
+        # REF Segments (Member Policy Number) --- Optional
+        ref_seg_array = [
+            'REF',                                      # Segment Name
+            '1L',                                       # Reference Identification Qualifier
+            str(enrollee['SocialSecurityNumber'])       # Member Group or Policy Number
+        ]
+        enrollee_ref_segment = generate_segment_from_array(ref_seg_array)
+        print(f"Member Policy Number: {enrollee_ref_segment}")
+
+
         enrollee_dependents = dependents[dependents[EMPLOYEE_ID_COL] == enrollee[EMPLOYEE_ID_COL]]
 
         for _, dependent in enrollee_dependents.iterrows():
