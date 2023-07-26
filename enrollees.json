@@ -1,0 +1,56 @@
+[
+    {
+        "EmployeeId": "123",
+        "ReasonCode": "1",
+        "EmployeeStatus": "Full-Time",
+        "MedicarePlanCode": "A",
+        "LastName": "",
+        "FirstName": "",
+        "SocialSecurityNumber": "",
+        "Address": "",
+        "City": "",
+        "State": "",
+        "Zip": "",
+        "BirthDate": "",
+        "Gender": "",
+        "CoverageLevel": "",
+        "DateHired": "",
+        "TerminationDate": "",
+        "Benefits": [
+            {
+                "BenefitType": "Medical",
+                "CoverageEffectiveFrom": "",
+                "CoverageEffectiveTo": ""
+            }
+        ],
+        "Dependents": [
+            {
+                "EmployeeId": "123",
+                "ReasonCode": "1",
+                "EmployeeStatus": "Full-Time",
+                "StudentStatus": "Yes",
+                "MedicarePlanCode": "A",
+                "LastName": "",
+                "FirstName": "",
+                "SocialSecurityNumber": "",
+                "Address": "",
+                "City": "",
+                "State": "",
+                "Zip": "",
+                "BirthDate": "",
+                "Gender": "",
+                "CoverageLevel": "",
+                "DateHired": "",
+                "TerminationDate": "",
+                "Benefits": [
+                    {
+                        "BenefitType": "Medical",
+                        "CoverageEffectiveFrom": "",
+                        "CoverageEffectiveTo": ""
+                    }
+                ]
+            }
+        ]
+
+    }
+]

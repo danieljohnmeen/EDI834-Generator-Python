@@ -1,7 +1,14 @@
+# Define Constants for the DB Connection
+DB_SERVER = '127.0.0.1'
+DB_DATABASE = 'enrollees'
+DB_USER_NAME = 'teszt'
+DB_USER_PASS = 'teszt'
+DB_DRIVER = '{ODBC Driver 17 for SQL Server}'
+
 # Define constants variables
 
-ENROLLEE_CSV = 'enrollees.csv'
-DEPENDENT_CSV = 'dependents.csv'
+ENROLLEE_TBL = 'Enrolle2'
+DEPENDENT_TBL = 'Dependent'
 PROVIDER_NAME_COL = 'Benefit Plan Provider Name'
 EMPLOYEE_ID_COL = 'EmployeeId'
 FIRST_NAME_COL = 'FirstName'
