@@ -7,12 +7,49 @@ DB_DRIVER = '{ODBC Driver 17 for SQL Server}'
 
 # Define constants variables
 
-ENROLLEE_TBL = 'Enrolle2'
-DEPENDENT_TBL = 'Dependent'
-PROVIDER_NAME_COL = 'Benefit Plan Provider Name'
-EMPLOYEE_ID_COL = 'EmployeeId'
-FIRST_NAME_COL = 'FirstName'
-LAST_NAME_COL = 'LastName'
+ENROLLEE_TBL = 'enrollee_Test'
+DEPENDENT_TBL = 'dependent_test'
+
+#  Define column names of Enrollee Table
+
+BENEFIT_PLAN_PROVIDER_NAME_COL  = 'Benefit_Plan_Provider_Name'
+EMPLOYEE_ID_COL                 = 'Employee_Id'
+BENEFIT_STATUS_CODE_COL         = 'Benefit_Status_Code'
+EMPLOYEE_STATUS_COL             = 'Employee_Status'
+LAST_NAME_COL                   = 'Last_Name'
+FIRST_NAME_COL                  = 'First_Name'
+SSN_COL                         = 'SocialSecurityNumber'
+ADDRESS1_COL                    = 'Address_1'
+ADDRESS2_COL                    = 'Address_2'
+ADDRESS3_COL                    = 'Address_3'
+CITY_COL                        = 'City'
+STATE_COL                       = 'State'
+ZIP_CODE_COL                    = 'Zip_Code'
+BIRTH_DATE_COL                  = 'BirthDate'
+GENDER_COL                      = 'Gender'
+COVERAGE_NAME_COL               = 'Coverage_Name'
+DATE_HIRED_COL                  = 'Date_Hired'
+DATE_TERMINATED_COL             = 'Date_Terminated'
+BENEFIT_TYPE_COL                = 'Benefit_Type'
+COVERAGE_EFFECTIVE_FROM_COL     = 'Coverage_Effective_From'
+COVERAGE_EFFECTIVE_TO_COL       = 'Coverage_Effective_To'
+
+# Define column names of dependents table
+
+DEPENDENT_SSN_COL                         = 'Dependent_SSN_1'
+DEPENDENT_BENEFIT_TYPE_COL                = 'Benefit_Type'
+DEPENDENT_COVERAGE_EFFECTIVE_FROM_COL     = 'Coverage_Effective_From'
+DEPENDENT_COVERAGE_EFFECTIVE_TO_COL       = 'Coverage_Effective_To'
+DEPENDENT_BENEFIT_STATUS_CODE_COL         = 'Benefit_Status_Code'
+DEPENDENT_EMPLOYEE_STATUS_COL             = 'Employee_Status'
+DEPENDENT_TYPE_COL                        = 'Dependent_Type'
+DEPENDENT_LAST_NAME_COL                   = 'Dependent_Last_Name'
+DEPENDENT_FIRST_NAME_COL                  = 'Dependent_First_Name'
+DEPENDENT_BIRTH_DATE_COL                  = 'Date_Birthday'
+DEPENDENT_GENDER_COL                      = 'Dependent_Gender'
+DEPENDENT_COVERAGE_NAME_COL               = 'Coverage_Name'
+
+
 # Define Constants variables for the ISA Segment
 ISA_AUTH_INFO_QUALIFIER             = '00'                      # No Authorization Information Present
 ISA_AUTH_INFO                       = '          '              # Empty 10 characters for 00 of I01 (MIN/MAX 10)
@@ -51,7 +88,3 @@ N1_INSURER_CODE                     = 'IN'
 N1_EMPLOYER_ID_NUMBER               = '24'
 N1_CODE_BY_ORGNIZATION              = '94'
 N1_FEDERAL_ID_NUMBER                = 'FI'
-N1_CENTERS_FOR_MEDICARE             = 'XV'
-# Define Constants variable for the INS Segment
-INS_SELF_CODE                       = '18'
-INS_CHILD_CODE                      = '19'
