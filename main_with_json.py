@@ -3,6 +3,8 @@ import pandas as pd
 from constants import *
 from load_json import *
 from functions import *
+
+
 json_data = load_json_from_sql()
 edi_documents = []
 unique_control_num = 1
@@ -34,29 +36,35 @@ if json_data:
 
         # BGN SEGMENT
         ## Pass the params for the BGN Segment here
-        trans_set_ref_num = 'TRANS_SET_REF_NUM'
-        original_trans_set_ref_num = 'ORIGIN_TRANS_SET_REF_NUM'
+        trans_set_ref_num = BGN_TRANS_SET_REF_NUM
+        original_trans_set_ref_num = BGN_ORIGIN_TRANS_SET_REF_NUM
         bgn_segment = generate_BGN(BGN_TRANS_PURP_CODE_ORIGIN, trans_set_ref_num, original_trans_set_ref_num)
         print(f"BGN SEGMENT: {bgn_segment}")
         provider_segments.append(bgn_segment)
         #End BGN SEGMENT
 
+        if provider_name != 'CIGNA':
+            header_dtp_seg_array = [
+                'DTP', '007', 'D8', datetime.now().strftime("%Y%m%d") 
+            ]
+            header_dtp_seg = generate_segment_from_array(header_dtp_seg_array)
+            provider_segments.append(header_dtp_seg)
         # N1 SEGMENTS for Sponsor and Payer
         ## sponsor segment
-        sponser_name = 'LBMC Employment Partners LLC'
-        sponsor_id_number = 'XXX'   # Sponser Identifier: Code identifying a party or other code (Min 2, Max 80)
+        sponser_name = SPONSER_NAME
+        sponsor_id_number = SPONSER_ID_NUMBER   # Sponser Identifier: Code identifying a party or other code (Min 2, Max 80)
         n1_sponsor_segment = generate_N1(N1_PLAN_SPONSOR_CODE, sponser_name, N1_FEDERAL_ID_NUMBER, sponsor_id_number)
         print(f"N1_SPONSOR: {n1_sponsor_segment}")
         provider_segments.append(n1_sponsor_segment)
         ## payer segment
-        insurer_id_code = 'XXXX'
+        insurer_id_code = CIGNA_INS_ID_NUM if provider_name == 'CIGNA' else BCBS_INS_ID_NUM
         n1_payer_segment = generate_N1(N1_INSURER_CODE, provider_name, N1_FEDERAL_ID_NUMBER, insurer_id_code)
         provider_segments.append(n1_payer_segment)
         print(f"N1_PAYER: {n1_payer_segment}")
 
         for enrollee in provider.get("Enrollees", []):
             enrolleeId = enrollee.get("EmployeeId", 'N/A')
-            provider_segments += generate_edi_for_person_from_json(enrollee)
+            provider_segments += generate_edi_for_person_from_json(provider_name, enrollee)
             
         # SE Segment
         se_seg_array = [
@@ -87,7 +95,14 @@ if json_data:
         provider_segments.append(data_iea_segment)
 
         provider_edi_document = "\n".join(provider_segments)
-        file_name = f"{provider_name.replace(' ', '_').lower()}_edi_{time.time_ns()}.txt"
+        if provider_name == 'CIGNA':
+            file_name = f"{OUTPUT_FILE_PREFIX_CIGNA}_{time.time_ns()}.txt"  #customize file name for cigna
+        else:
+            file_name = f"{OUTPUT_FILE_PREFIX_BCBS}_{time.time_ns()}.txt"  #customize file name for bcbs
         with open(file_name, 'w') as file:
             file.write(provider_edi_document)
         print(f"End Writing EDI for {provider_name}")
+        if provider_name == 'CIGNA' and CIGNA_SFTP_ALLOW == 'Y':
+            writeTextOverSFTP(provider_edi_document, True, file_name)
+        if provider_name != 'CIGNA' and BCBS_SFTP_ALLOW == 'Y':
+            writeTextOverSFTP(provider_edi_document, False, file_name)

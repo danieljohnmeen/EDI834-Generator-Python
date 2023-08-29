@@ -5,11 +5,31 @@ DB_USER_NAME = 'teszt'
 DB_USER_PASS = 'teszt'
 DB_DRIVER = '{ODBC Driver 17 for SQL Server}'
 
+#Define Constants for the SFTP
+## CIGNA
+
+CIGNA_SFTP_HOST = ''
+CIGNA_SFTP_PORT = 22
+CIGNA_SFTP_USER = ''
+CIGNA_SFTP_PASS = ''
+CIGNA_SFTP_PATH = 'edi/'
+CIGNA_SFTP_ALLOW = 'Y'
+## BCBS
+BCBS_SFTP_HOST = ''
+BCBS_SFTP_PORT = 22
+BCBS_SFTP_USER = ''
+BCBS_SFTP_PASS = ''
+BCBS_SFTP_PATH = 'inbox/'
+BCBS_SFTP_ALLOW = 'Y'
+
 # Define constants variables
 
 ENROLLEE_TBL = 'enrollee_Test'
 DEPENDENT_TBL = 'dependent_test'
 
+# Define output file prefix
+OUTPUT_FILE_PREFIX_CIGNA = 'TEST_CIGNA'
+OUTPUT_FILE_PREFIX_BCBS = 'TEST_BCBS'
 #  Define column names of Enrollee Table
 
 BENEFIT_PLAN_PROVIDER_NAME_COL  = 'Benefit_Plan_Provider_Name'
@@ -30,16 +50,25 @@ GENDER_COL                      = 'Gender'
 COVERAGE_NAME_COL               = 'Coverage_Name'
 DATE_HIRED_COL                  = 'Date_Hired'
 DATE_TERMINATED_COL             = 'Date_Terminated'
-BENEFIT_TYPE_COL                = 'Benefit_Type'
+BENEFIT_TYPE_COL                = 'product_category'
 COVERAGE_EFFECTIVE_FROM_COL     = 'Coverage_Effective_From'
 COVERAGE_EFFECTIVE_TO_COL       = 'Coverage_Effective_To'
-
+COVERAGE_CODE_COL				= 'Coverage_Code'
+COVERAGE_PLAN_COL				= 'PlanID'
+BCBS_CLASS_ID_COL				= 'bcbsclassID'
+BCBS_GROUP_ID_COL				= 'BCBSGroupID'
+RELATION_COL					= 'Relationship_Code'
+EMPLOYEE_TYPE_COL				= 'Employee_Type'
+COMPANY_CODE_COL				= 'CompanyCode'
 # Define column names of dependents table
 
-DEPENDENT_SSN_COL                         = 'Dependent_SSN_1'
-DEPENDENT_BENEFIT_TYPE_COL                = 'Benefit_Type'
+DEPENDENT_SSN_COL                         = 'Dependent_SS'
+DEPENDENT_BENEFIT_TYPE_COL                = 'Product_Category'
+DEPENDENT_BENEFIT_PLAN_PROVIDER_NAME_COL  = 'Benefit_Plan_Provider_Name'
 DEPENDENT_COVERAGE_EFFECTIVE_FROM_COL     = 'Coverage_Effective_From'
 DEPENDENT_COVERAGE_EFFECTIVE_TO_COL       = 'Coverage_Effective_To'
+DEPENDENT_COVERAGE_CODE_COL				= 'CoverageCode'
+DEPENDENT_COVERAGE_PLAN_COL				= 'PlanID'
 DEPENDENT_BENEFIT_STATUS_CODE_COL         = 'Benefit_Status_Code'
 DEPENDENT_EMPLOYEE_STATUS_COL             = 'Employee_Status'
 DEPENDENT_TYPE_COL                        = 'Dependent_Type'
@@ -48,8 +77,11 @@ DEPENDENT_FIRST_NAME_COL                  = 'Dependent_First_Name'
 DEPENDENT_BIRTH_DATE_COL                  = 'Date_Birthday'
 DEPENDENT_GENDER_COL                      = 'Dependent_Gender'
 DEPENDENT_COVERAGE_NAME_COL               = 'Coverage_Name'
-
-
+DEPENDENT_BCBS_CLASS_ID_COL				= 'bcbsclassID'
+DEPENDENT_BCBS_GROUP_ID_COL				= 'BCBSGroupID'
+DEPENDENT_PARENT_SSN_COL				= 'SS'
+DEPENDENT_RELATION_COL					= 'Relationship_Code'
+DEPENDENT_COMPANY_CODE_COL				= 'companycode'
 # Define Constants variables for the ISA Segment
 ISA_AUTH_INFO_QUALIFIER             = '00'                      # No Authorization Information Present
 ISA_AUTH_INFO                       = '          '              # Empty 10 characters for 00 of I01 (MIN/MAX 10)
@@ -78,8 +110,10 @@ BGN_TRANS_PURP_CODE_ORIGIN          = '00'
 BGN_TRANS_PURP_CODE_RE_SUB          = '15'
 BGN_TRANS_PURP_CODE_INFOCP          = '22'
 BGN_TIMEZONE_CODE                   = '01'                      # Time Zone Code
-BGN_ACTION_CODE                     = '2'                       # Action Code (2: Change/Update, 4: Verify, RX: Replace)
+BGN_ACTION_CODE                     = 'RX'                       # Action Code (2: Change/Update, 4: Verify, RX: Replace)
 BGN_07                              = ''                        # BGN07: Undefined
+BGN_TRANS_SET_REF_NUM				= ''						# 7211
+BGN_ORIGIN_TRANS_SET_REF_NUM		= ''
 # Define Constants variable for the N1 Segment
 ## Entity Identifier Code
 N1_PLAN_SPONSOR_CODE                = 'P5'
@@ -88,3 +122,11 @@ N1_INSURER_CODE                     = 'IN'
 N1_EMPLOYER_ID_NUMBER               = '24'
 N1_CODE_BY_ORGNIZATION              = '94'
 N1_FEDERAL_ID_NUMBER                = 'FI'
+
+SPONSER_NAME 						= 'LBMC Employment Partners LLC'
+SPONSER_ID_NUMBER					= '06-0303370'
+
+CIGNA_INS_ID_NUM					= '06-0303370'
+BCBS_INS_ID_NUM						= '620427913'
+
+
