@@ -181,7 +181,7 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
     ref_seg_array = [
         'REF',                                          # Segment Name
         '0F',                                           # Reference Identification Qualifier
-        re.sub(r'[-]', '', data.get('SocialSecurityNumber'))               # Subscriber Identifier
+        re.sub(r'[-]', '', data.get('SocialSecurityNumber') if isSelf ==True else data.get('ParentSocialSecurityNumber'))                # Subscriber Identifier
     ]
     data_ref_segment = generate_segment_from_array(ref_seg_array)
     print(f"REF Segment: {data_ref_segment}")
@@ -212,7 +212,7 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
     ref_seg_array = [
         'REF',                                          # Segment Name
         'DX',                                           # Reference Identification Qualifier
-        data.get('CompanyCode')               # Subscriber Identifier
+        data.get('CompanyCode') if data.get('CompanyCode', '') != None else ''               # Subscriber Identifier
     ]
     data_ref_segment = generate_segment_from_array(ref_seg_array)
     print(f"REF Segment: {data_ref_segment}")
@@ -258,27 +258,26 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
     segments.append(data_nm1_segment)
 
 
-    if isSelf == True:
-        # N3 Segment
-        n3_seg_array = [
-            'N3',                                       # Segment Name
-            data.get('Address', 'Address')                        # Member Address Line
-        ]
-        data_n3_segment = generate_segment_from_array(n3_seg_array)
-        print(f"N3 Segment: {data_n3_segment}")
-        segments.append(data_n3_segment)
+    # N3 Segment
+    n3_seg_array = [
+        'N3',                                       # Segment Name
+        data.get('Address', 'Address')                        # Member Address Line
+    ]
+    data_n3_segment = generate_segment_from_array(n3_seg_array)
+    print(f"N3 Segment: {data_n3_segment}")
+    segments.append(data_n3_segment)
 
-        # N4 Segment
-        n4_seg_array = [
-            'N4',                                       # Segment Name
-            data.get('City', 'City'),                           # Member City Name
-            convert_to_2_length(data.get('State', 'ST')),     # Member State Code (Min/Max 2)
-            str(data.get('Zip', '00000')),                       # Member Postal Zone or Zip Code
-            ''                                        # Country Code
-        ]
-        data_n4_segment = generate_segment_from_array(n4_seg_array)
-        print(f"N4 Segment: {data_n4_segment}")
-        segments.append(data_n4_segment)
+    # N4 Segment
+    n4_seg_array = [
+        'N4',                                       # Segment Name
+        data.get('City', 'City'),                           # Member City Name
+        convert_to_2_length(data.get('State', 'ST')),     # Member State Code (Min/Max 2)
+        str(data.get('Zip', '00000')),                       # Member Postal Zone or Zip Code
+        ''                                        # Country Code
+    ]
+    data_n4_segment = generate_segment_from_array(n4_seg_array)
+    print(f"N4 Segment: {data_n4_segment}")
+    segments.append(data_n4_segment)
 
     # DMG Segment
     dmg_seg_array = [
