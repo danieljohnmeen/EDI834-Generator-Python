@@ -87,6 +87,7 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
     print(f'>>> >>> >>> >>> Get Dependent: {dependent_ssn}')
     query_for_benefits = f'''select 
         [{DEPENDENT_SSN_COL}]                         as Dependent_SSN,
+        [{DEPENDENT_PARENT_SSN_COL}]                  as Dependent_Parent_SSN,
         [{DEPENDENT_BENEFIT_TYPE_COL}]                as Benefit_Type,
         [{DEPENDENT_RELATION_COL}]                    as RelationCode,
         [{DEPENDENT_BCBS_CLASS_ID_COL}]                 as BCBC_Class,
@@ -101,6 +102,12 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
         [{DEPENDENT_TYPE_COL}]                        as Dependent_Type,
         [{DEPENDENT_LAST_NAME_COL}]                   as Dependent_Last_Name,
         [{DEPENDENT_FIRST_NAME_COL}]                  as Dependent_First_Name,
+        [{DEPENDENT_ADDRESS1_COL}]                    as Address_1,
+        [{DEPENDENT_ADDRESS2_COL}]                    as Address_2,
+        [{DEPENDENT_ADDRESS3_COL}]                    as Address_3,
+        [{DEPENDENT_CITY_COL}]                        as City,
+        [{DEPENDENT_STATE_COL}]                       as State,
+        [{DEPENDENT_ZIP_CODE_COL}]                    as Zip_Code,
         [{DEPENDENT_BIRTH_DATE_COL}]                  as Date_Birthday,
         [{DEPENDENT_GENDER_COL}]                      as Dependent_Gender,
         [{DEPENDENT_COVERAGE_NAME_COL}]               as Coverage_Name
@@ -136,7 +143,12 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
         "RelationShipCode": dependent.RelationCode,
         "LastName": dependent.Dependent_Last_Name,
         "FirstName": dependent.Dependent_First_Name,
+        "Address": f'{dependent.Address_1 if dependent.Address_1!= None  and  dependent.Address_1 != "NULL" else "" } {dependent.Address_2 if dependent.Address_2 != None  and  dependent.Address_2 != "NULL" else ""} {dependent.Address_3 if dependent.Address_3 !=  None  and  dependent.Address_3 != "NULL" else ""}'.strip(),
+        "City": str(dependent.City).strip() if dependent.City != None and  dependent.City != 'NULL' else "",
+        "State": str(dependent.State).strip()  if dependent.State != None and  dependent.State != 'NULL' else "",
+        "Zip": str(dependent.Zip_Code).strip()  if dependent.Zip_Code != None and  dependent.Zip_Code != 'NULL'else "",
         "SocialSecurityNumber": str(dependent.Dependent_SSN).strip().replace('.0', ''),
+        "ParentSocialSecurityNumber": str(dependent.Dependent_Parent_SSN).strip().replace('.0', ''),
         "BirthDate": dependent.Date_Birthday,
         "Gender": dependent.Dependent_Gender,
         "CoverageLevel": dependent.Coverage_Name,

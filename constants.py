@@ -13,14 +13,14 @@ CIGNA_SFTP_PORT = 22
 CIGNA_SFTP_USER = ''
 CIGNA_SFTP_PASS = ''
 CIGNA_SFTP_PATH = 'edi/'
-CIGNA_SFTP_ALLOW = 'Y'
+CIGNA_SFTP_ALLOW = 'N'
 ## BCBS
 BCBS_SFTP_HOST = ''
 BCBS_SFTP_PORT = 22
 BCBS_SFTP_USER = ''
 BCBS_SFTP_PASS = ''
 BCBS_SFTP_PATH = 'inbox/'
-BCBS_SFTP_ALLOW = 'Y'
+BCBS_SFTP_ALLOW = 'N'
 
 # Define constants variables
 
@@ -74,6 +74,12 @@ DEPENDENT_EMPLOYEE_STATUS_COL             = 'Employee_Status'
 DEPENDENT_TYPE_COL                        = 'Dependent_Type'
 DEPENDENT_LAST_NAME_COL                   = 'Dependent_Last_Name'
 DEPENDENT_FIRST_NAME_COL                  = 'Dependent_First_Name'
+DEPENDENT_ADDRESS1_COL                    = 'Address_1'
+DEPENDENT_ADDRESS2_COL                    = 'Address_2'
+DEPENDENT_ADDRESS3_COL                    = 'Address_3'
+DEPENDENT_CITY_COL                        = 'City'
+DEPENDENT_STATE_COL                       = 'State'
+DEPENDENT_ZIP_CODE_COL                    = 'Zip_Code'
 DEPENDENT_BIRTH_DATE_COL                  = 'Date_Birthday'
 DEPENDENT_GENDER_COL                      = 'Dependent_Gender'
 DEPENDENT_COVERAGE_NAME_COL               = 'Coverage_Name'
