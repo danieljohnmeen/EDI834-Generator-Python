@@ -96,7 +96,7 @@ if json_data:
 
         provider_edi_document = "\n".join(provider_segments)
         if provider_name == 'CIGNA':
-            file_name = f"{OUTPUT_FILE_PREFIX_CIGNA}_{time.time_ns()}.txt"  #customize file name for cigna
+            file_name = f"{OUTPUT_FILE_PREFIX_CIGNA}.txt"  #customize file name for cigna
         else:
             file_name = f"{OUTPUT_FILE_PREFIX_BCBS}_{time.time_ns()}.txt"  #customize file name for bcbs
         with open(file_name, 'w') as file:
