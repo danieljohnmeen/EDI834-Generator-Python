@@ -25,8 +25,6 @@ def load_json_from_sql():
         for provider in providers:
             enrollees_array = []
             provider_name = provider.provider_name
-            if provider_name == 'CIGNA':
-                continue
             print(f'Start Provider -> ID: {provider_name}')
             #   Get EmployeeID list from { ENROLLEE_TBL } for the provider name
             query_for_enrollee_ids = f'''SELECT [{SSN_COL}] AS SocialSecurityNumber
@@ -112,7 +110,7 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
         [{DEPENDENT_BIRTH_DATE_COL}]                  as Date_Birthday,
         [{DEPENDENT_GENDER_COL}]                      as Dependent_Gender,
         [{DEPENDENT_COVERAGE_NAME_COL}]               as Coverage_Name,
-        ROW_NUMBER() OVER (PARTITION BY [{DEPENDENT_BENEFIT_TYPE_COL}] ORDER BY (SELECT NULL)) as rn
+        ROW_NUMBER() OVER (PARTITION BY [{DEPENDENT_BENEFIT_TYPE_COL}] ORDER BY [{DEPENDENT_COVERAGE_EFFECTIVE_FROM_COL}] DESC) as rn
        from {DEPENDENT_TBL} where [{DEPENDENT_BENEFIT_PLAN_PROVIDER_NAME_COL}] = '{provider_name}' AND  TRIM([{DEPENDENT_SSN_COL}]) = \'{str(dependent_ssn).strip()}\')
         SELECT * 
         FROM CTE 
@@ -188,7 +186,7 @@ def make_json_from_enrollee(provider_name, enrollee, cursor):
             [{COVERAGE_PLAN_COL}]               as Coverage_Plan,
             [{COVERAGE_EFFECTIVE_FROM_COL}]     as Coverage_Effective_From,
             [{COVERAGE_EFFECTIVE_TO_COL}]       as Coverage_Effective_To,
-            ROW_NUMBER() OVER (PARTITION BY [{BENEFIT_TYPE_COL}] ORDER BY (SELECT NULL)) as rn
+            ROW_NUMBER() OVER (PARTITION BY [{BENEFIT_TYPE_COL}] ORDER BY [{COVERAGE_EFFECTIVE_FROM_COL}] DESC) as rn
         from {ENROLLEE_TBL} where [{BENEFIT_PLAN_PROVIDER_NAME_COL}] = '{provider_name}' AND [{SSN_COL}] = \'{enrollee.SocialSecurityNumber}\')
         SELECT * 
         FROM CTE 
