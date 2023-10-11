@@ -46,6 +46,7 @@ def load_json_from_sql():
                 [{COMPANY_CODE_COL}]                as CompanyCode,
                 [{BCBS_CLASS_ID_COL}]                 as BCBC_Class,
                 [{BCBS_GROUP_ID_COL}]                 as BCBC_Group,
+                [{CIGNA_GROUP_ID_COL}]                 as CIGNA_Group,
                 [{LAST_NAME_COL}]                   as Last_Name,
                 [{FIRST_NAME_COL}]                  as First_Name,
                 [{SSN_COL}]                         as SocialSecurityNumber,
@@ -80,7 +81,7 @@ def load_json_from_sql():
     except pyodbc.Error as ex:
         print("Error connecting to the database:", ex)
         return []
-def make_json_from_dependent(provider_name, dependent_ssn, cursor):
+def make_json_from_dependent(provider_name, parent_ssn, dependent_ssn, cursor):
     #   Get dpeendent details from provided SSN Number
     print(f'>>> >>> >>> >>> Get Dependent: {dependent_ssn}')
     query_for_benefits = f'''WITH CTE AS (
@@ -91,6 +92,7 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
         [{DEPENDENT_RELATION_COL}]                    as RelationCode,
         [{DEPENDENT_BCBS_CLASS_ID_COL}]                 as BCBC_Class,
         [{DEPENDENT_BCBS_GROUP_ID_COL}]                 as BCBC_Group,
+        [{DEPENDENT_CIGNA_GROUP_ID_COL}]                as CIGNA_Group,
         [{DEPENDENT_COVERAGE_EFFECTIVE_FROM_COL}]     as Coverage_Effective_From,
         [{DEPENDENT_COVERAGE_EFFECTIVE_TO_COL}]       as Coverage_Effective_To,
         [{DEPENDENT_COVERAGE_CODE_COL}]               as Coverage_Code,
@@ -111,7 +113,7 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
         [{DEPENDENT_GENDER_COL}]                      as Dependent_Gender,
         [{DEPENDENT_COVERAGE_NAME_COL}]               as Coverage_Name,
         ROW_NUMBER() OVER (PARTITION BY [{DEPENDENT_BENEFIT_TYPE_COL}] ORDER BY [{DEPENDENT_COVERAGE_EFFECTIVE_FROM_COL}] DESC) as rn
-       from {DEPENDENT_TBL} where [{DEPENDENT_BENEFIT_PLAN_PROVIDER_NAME_COL}] = '{provider_name}' AND  TRIM([{DEPENDENT_SSN_COL}]) = \'{str(dependent_ssn).strip()}\')
+       from {DEPENDENT_TBL} where [{DEPENDENT_BENEFIT_PLAN_PROVIDER_NAME_COL}] = '{provider_name}'  AND [{DEPENDENT_PARENT_SSN_COL}] = \'{parent_ssn}\'  AND  TRIM([{DEPENDENT_SSN_COL}]) = \'{str(dependent_ssn).strip()}\')
         SELECT * 
         FROM CTE 
         WHERE rn = 1'''
@@ -143,6 +145,7 @@ def make_json_from_dependent(provider_name, dependent_ssn, cursor):
         "EmployeeType": "",
         "BCBCClass": bcbcClasId,
         "BCBCGruop": dependent.BCBC_Group,
+        "CIGNAGroup": dependent.CIGNA_Group,
         "CompanyCode": dependent.CompanyCode,
         "RelationShipCode": dependent.RelationCode,
         "LastName": dependent.Dependent_Last_Name,
@@ -210,7 +213,7 @@ def make_json_from_enrollee(provider_name, enrollee, cursor):
     dependent_ssn_list = cursor.fetchall()
     for dependent_ssn in dependent_ssn_list:
         if dependent_ssn.Dependent_SSN != None:
-            row_dependent = make_json_from_dependent(provider_name, dependent_ssn.Dependent_SSN, cursor)
+            row_dependent = make_json_from_dependent(provider_name, enrollee.SocialSecurityNumber, dependent_ssn.Dependent_SSN, cursor)
             dependents_array.append(row_dependent)
     bcbcClasId = ''
     if provider_name != 'CIGNA':
@@ -232,6 +235,7 @@ def make_json_from_enrollee(provider_name, enrollee, cursor):
         "BCBCClass": bcbcClasId,
         "CompanyCode": enrollee.CompanyCode,
         "BCBCGruop": enrollee.BCBC_Group,
+        "CIGNAGroup": enrollee.CIGNA_Group,
         "LastName": str(enrollee.Last_Name).strip(),
         "FirstName": str(enrollee.First_Name).strip(),
         "SocialSecurityNumber": str(enrollee.SocialSecurityNumber).strip(),

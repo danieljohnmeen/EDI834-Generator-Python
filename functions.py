@@ -86,19 +86,25 @@ def convert_to_lenth_str(input_string, str_length):
     return input_string[:str_length].zfill(str_length)
 
 
-def generate_ISA(control_num):
+def generate_ISA(control_num, provider_name):
     """Generate the ISA segment with the provided control number."""
     current_date = datetime.now().strftime("%y%m%d")  # YYMMDD
     current_time = datetime.now().strftime("%H%M")
-    isa_segment = f"ISA*{ISA_AUTH_INFO_QUALIFIER}*{ISA_AUTH_INFO}*{ISA_SEC_INFO_QUALIFIER}*{ISA_SEC_INFO}*{ISA_SENDER_ID_QUALIFIER}*{ISA_SENDER_ID}*{ISA_RECEIVER_ID_QUALIFIER}*{ISA_RECEIVER_ID}*{current_date}*{current_time}*U*{ISA_CONTROL_VERSION_NUMBER}*{control_num:09}*{ISA_ACK_REQUESTED}*{ISA_USAGE_INDICATOR}*>~"
+    if provider_name != 'CIGNA':
+        isa_segment = f"ISA*{ISA_AUTH_INFO_QUALIFIER}*{ISA_AUTH_INFO}*{ISA_SEC_INFO_QUALIFIER}*{ISA_SEC_INFO}*{ISA_SENDER_ID_QUALIFIER}*{ISA_SENDER_ID_BCBS}*{ISA_RECEIVER_ID_QUALIFIER}*{ISA_RECEIVER_ID_BCBS}*{current_date}*{current_time}*U*{ISA_CONTROL_VERSION_NUMBER}*{control_num:09}*{ISA_ACK_REQUESTED}*{ISA_USAGE_INDICATOR}*>~"
+    else:
+        isa_segment = f"ISA*{ISA_AUTH_INFO_QUALIFIER}*{ISA_AUTH_INFO}*{ISA_SEC_INFO_QUALIFIER}*{ISA_SEC_INFO}*{ISA_SENDER_ID_QUALIFIER}*{ISA_SENDER_ID_CIGNA}*{ISA_RECEIVER_ID_QUALIFIER}*{ISA_RECEIVER_ID_CIGNA}*{current_date}*{current_time}*U*{ISA_CONTROL_VERSION_NUMBER}*{control_num:09}*{ISA_ACK_REQUESTED}*{ISA_USAGE_INDICATOR}*>~"
     return isa_segment
 
 
-def generate_GS(control_num):
+def generate_GS(control_num, provider_name):
     """Generate the GS segment with the provided control number."""
     current_date = datetime.now().strftime("%Y%m%d")  # CCYYMMDD
     current_time = datetime.now().strftime("%H%M")
-    gs_segment = f"GS*{GS_FUN_IDENTI_CODE}*{GS_APP_SENDER_CODE}*{GS_APP_RECEIV_CODE}*{current_date}*{current_time}*{control_num}*{GS_RES_AGENCY_CODE}*{GS_VER_REL_IND_IDENTI_CODE}~"
+    if provider_name != 'CIGNA':
+        gs_segment = f"GS*{GS_FUN_IDENTI_CODE}*{GS_APP_SENDER_CODE_BCBS}*{GS_APP_RECEIV_CODE_BCBS}*{current_date}*{current_time}*{control_num}*{GS_RES_AGENCY_CODE}*{GS_VER_REL_IND_IDENTI_CODE}~"
+    else:
+        gs_segment = f"GS*{GS_FUN_IDENTI_CODE}*{GS_APP_SENDER_CODE_CIGNA}*{GS_APP_RECEIV_CODE_CIGNA}*{current_date}*{current_time}*{control_num}*{GS_RES_AGENCY_CODE}*{GS_VER_REL_IND_IDENTI_CODE}~"
     return gs_segment
 
 
@@ -206,7 +212,14 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
         ]
         data_ref_segment = generate_segment_from_array(ref_seg_array)
         segments.append(data_ref_segment)
-
+    else:
+        ref_seg_array = [
+            'REF',                                          # Segment Name
+            '1L',                                           # Reference Identification Qualifier
+            data.get('CIGNAGroup') + data.get('CompanyCode') + ' ' +   data.get('CoveragePlan')                         # Subscriber Identifier
+        ]
+        data_ref_segment = generate_segment_from_array(ref_seg_array)
+        segments.append(data_ref_segment)
 
     # REF Segments (Subscriber Identifier)
     ref_seg_array = [
@@ -285,14 +298,6 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
         'D8',                                           # Date Time Period Format Qualifier
         convert_date_to_ccyymmdd(data.get('BirthDate')),                           # Member Birth Date
         convert_to_gender_code(data.get('Gender')),     # Gender Code
-        '',                                             # Marital Status Code
-        '',                                             # Composite Race or Ethnicity Information
-        '',                                             # Citizenship Status Code
-        '',                                             # DMG-07
-        '',                                             # DMG-08
-        '',                                             # DMG-09
-        '',                                             # Code List Qualifier Code
-        ''                                              # Race or Ethnicit Collection Code
     ]
     data_dmg_segment = generate_segment_from_array(dmg_seg_array)
     print(f"DMG Segment: {data_dmg_segment}")
