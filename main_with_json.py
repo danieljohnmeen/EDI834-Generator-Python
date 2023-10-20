@@ -17,13 +17,13 @@ if json_data:
         print(f"{provider_name}")
 
         # ISA SEGMENT
-        isa_segment = generate_ISA(unique_control_num)
+        isa_segment = generate_ISA(unique_control_num, provider_name)
         print(f"ISA SEGMENT: {isa_segment}")
         provider_segments.append(isa_segment)
         # END ISA SEGMENT
 
         # GS SEGMENT
-        gs_segment = generate_GS(unique_control_num)
+        gs_segment = generate_GS(unique_control_num, provider_name)
         print(f"GS SEGMENT: {gs_segment}")
         provider_segments.append(gs_segment)
         # END GS SEGMENT
@@ -52,7 +52,7 @@ if json_data:
         # N1 SEGMENTS for Sponsor and Payer
         ## sponsor segment
         sponser_name = SPONSER_NAME
-        sponsor_id_number = SPONSER_ID_NUMBER   # Sponser Identifier: Code identifying a party or other code (Min 2, Max 80)
+        sponsor_id_number = SPONSER_ID_NUMBER_BCBS if provider_name != 'CIGNA' else  SPONSER_ID_NUMBER_CIGNA  # Sponser Identifier: Code identifying a party or other code (Min 2, Max 80)
         n1_sponsor_segment = generate_N1(N1_PLAN_SPONSOR_CODE, sponser_name, N1_FEDERAL_ID_NUMBER, sponsor_id_number)
         print(f"N1_SPONSOR: {n1_sponsor_segment}")
         provider_segments.append(n1_sponsor_segment)
