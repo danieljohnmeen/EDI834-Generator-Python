@@ -161,23 +161,32 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
     """Get EDI with the provided json object."""
     segments = []
     # Generate Ins Segment
-    ins_seg_array = [
-        'INS',                                      # Segment Name
-        'Y' if isSelf else 'N',                                        # Member Indicator (Y/N)
-        data.get('RelationShipCode', '18'),                                   # Individual Relationship Code
-        '030',                                      # Maintenance Type Code
-        'XN',           # Maintenance Reason Code
-        convert_to_lenth_str(str(data.get('BenefitStatusCode', 'A')),1),                   # Benefit Status Code
-        '',             # Medicare Status Code
-        '',                                         # Consolidated Omnibus Budget Reconciliation Act (COBRA) Qualifying Event Code
-        data.get('EmployeeType', '') if data.get('EmployeeType', '') != None else '',                # Employment Status Code
-        get_student_status_code(data.get('StudentStatus', '')) if data.get('StudentStatus', '') != None else '',                        # Student Status Code
-        '',                             # Handicap Indicator
-        '',                             # Date Time Period Format Qualifier  (Empty if no value for member individual death date)
-        '',                             # Member Individual Death Date
-        '',                             # Confidentiality Code (R: Restricted Access, U: Unrestricted Access)
-        '',                             # Birth Sequence Number (Min 1, Max 9)
-    ]
+    student_status_code = get_student_status_code(data.get('StudentStatus', '')) if data.get('StudentStatus', '') != None else ''
+    if student_status_code != 'N':
+        ins_seg_array = [
+            'INS',                                      # Segment Name
+            'Y' if isSelf else 'N',                                        # Member Indicator (Y/N)
+            data.get('RelationShipCode', '18'),                                   # Individual Relationship Code
+            '030',                                      # Maintenance Type Code
+            'XN',           # Maintenance Reason Code
+            convert_to_lenth_str(str(data.get('BenefitStatusCode', 'A')),1),                   # Benefit Status Code
+            '',             # Medicare Status Code
+            '',                                         # Consolidated Omnibus Budget Reconciliation Act (COBRA) Qualifying Event Code
+            data.get('EmployeeType', '') if data.get('EmployeeType', '') != None else '',                # Employment Status Code
+            get_student_status_code(data.get('StudentStatus', '')) if data.get('StudentStatus', '') != None else '',                        # Student Status Code
+        ]
+    else:
+        ins_seg_array = [
+            'INS',                                      # Segment Name
+            'Y' if isSelf else 'N',                                        # Member Indicator (Y/N)
+            data.get('RelationShipCode', '18'),                                   # Individual Relationship Code
+            '030',                                      # Maintenance Type Code
+            'XN',           # Maintenance Reason Code
+            convert_to_lenth_str(str(data.get('BenefitStatusCode', 'A')),1),                   # Benefit Status Code
+            '',             # Medicare Status Code
+            '',                                         # Consolidated Omnibus Budget Reconciliation Act (COBRA) Qualifying Event Code
+            data.get('EmployeeType', '') if data.get('EmployeeType', '') != None else '',                # Employment Status Code
+        ]
     data_ins_segment = generate_segment_from_array(ins_seg_array)
     print(f"Ins Segment: {data_ins_segment}")
     segments.append(data_ins_segment)
@@ -212,24 +221,18 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
         ]
         data_ref_segment = generate_segment_from_array(ref_seg_array)
         segments.append(data_ref_segment)
-    else:
-        ref_seg_array = [
-            'REF',                                          # Segment Name
-            '1L',                                           # Reference Identification Qualifier
-            data.get('CIGNAGroup') + data.get('CompanyCode') + ' ' +   data.get('CoveragePlan')                         # Subscriber Identifier
-        ]
-        data_ref_segment = generate_segment_from_array(ref_seg_array)
-        segments.append(data_ref_segment)
+
 
     # REF Segments (Subscriber Identifier)
-    ref_seg_array = [
-        'REF',                                          # Segment Name
-        'DX',                                           # Reference Identification Qualifier
-        data.get('CompanyCode') if data.get('CompanyCode', '') != None else ''               # Subscriber Identifier
-    ]
-    data_ref_segment = generate_segment_from_array(ref_seg_array)
-    print(f"REF Segment: {data_ref_segment}")
-    segments.append(data_ref_segment)
+    if provider_name != 'CIGNA':
+        ref_seg_array = [
+            'REF',                                          # Segment Name
+            'DX',                                           # Reference Identification Qualifier
+            data.get('CompanyCode') if data.get('CompanyCode', '') != None else ''               # Subscriber Identifier
+        ]
+        data_ref_segment = generate_segment_from_array(ref_seg_array)
+        print(f"REF Segment: {data_ref_segment}")
+        segments.append(data_ref_segment)
     if isSelf == True:
         # DTP Segments for Employment Started
         dtp_seg_array = [
@@ -286,7 +289,6 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
         data.get('City', 'City'),                           # Member City Name
         convert_to_2_length(data.get('State', 'ST')),     # Member State Code (Min/Max 2)
         str(data.get('Zip', '00000')),                       # Member Postal Zone or Zip Code
-        ''                                        # Country Code
     ]
     data_n4_segment = generate_segment_from_array(n4_seg_array)
     print(f"N4 Segment: {data_n4_segment}")
@@ -312,12 +314,8 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
             '030',                                          # Maintenance Type Code
             '',
             convert_to_insurance_line_code(benefit.get('BenefitType', '')),                                           # Insurance Line Code
-            coverage_plan if coverage_plan != None  else '',                                             # Plan Coverage Description
+            coverage_plan if provider_name != 'CIGNA' and coverage_plan != None  else '',                                             # Plan Coverage Description
             convert_to_coverage_level_code(coverage_code if coverage_code != None else 'EMP') if isSelf == True else ''   ,# Coverage Level Code
-            '',                                             # 
-            '',                                             # 
-            '',                                             # 
-            'N'                                             # Late Enrollment Indicator
         ]
         data_hd_segment = generate_segment_from_array(hd_seg_array)
         print(f"HD Segment: {data_hd_segment}")
@@ -347,6 +345,19 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
             data_dtp_segment = generate_segment_from_array(dtp_seg_array)
             print(f"DTP Segments for Health Coverage Dates: {data_dtp_segment}")
             segments.append(data_dtp_segment)
+        
+        if provider_name == 'CIGNA':
+            cigna_group = data.get('CIGNAGroup') or ''
+            company_code = data.get('CompanyCode') or ''
+            coverage_plan = benefit.get('CoveragePlan') or ''
+            result = cigna_group + company_code + ' ' + coverage_plan
+            ref_seg_array = [
+                'REF',                                          # Segment Name
+                '1L',                                           # Reference Identification Qualifier
+                result                        # Subscriber Identifier
+            ]
+            data_ref_segment = generate_segment_from_array(ref_seg_array)
+            segments.append(data_ref_segment)
     
     for depent in data.get('Dependents', []):
         print('Dependent')
