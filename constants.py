@@ -1,8 +1,8 @@
 # Define Constants for the DB Connection
-DB_SERVER = '127.0.0.1'
-DB_DATABASE = 'enrollees'
-DB_USER_NAME = 'teszt'
-DB_USER_PASS = 'teszt'
+DB_SERVER = 'lbmcbenefits.database.windows.net'
+DB_DATABASE = 'LBMCbenefits'
+DB_USER_NAME = 'LBMC@lbmcbenefits'
+DB_USER_PASS = '3fP3Z4AE69tgyOBoa3sF'
 DB_DRIVER = '{ODBC Driver 17 for SQL Server}'
 
 #Define Constants for the SFTP
@@ -57,6 +57,7 @@ COVERAGE_CODE_COL				= 'Coverage_Code'
 COVERAGE_PLAN_COL				= 'PlanID'
 BCBS_CLASS_ID_COL				= 'bcbsclassID'
 BCBS_GROUP_ID_COL				= 'BCBSGroupID'
+CIGNA_GROUP_ID_COL              = 'CignaGroupID'
 RELATION_COL					= 'Relationship_Code'
 EMPLOYEE_TYPE_COL				= 'Employee_Type'
 COMPANY_CODE_COL				= 'CompanyCode'
@@ -85,6 +86,7 @@ DEPENDENT_GENDER_COL                      = 'Dependent_Gender'
 DEPENDENT_COVERAGE_NAME_COL               = 'Coverage_Name'
 DEPENDENT_BCBS_CLASS_ID_COL				= 'bcbsclassID'
 DEPENDENT_BCBS_GROUP_ID_COL				= 'BCBSGroupID'
+DEPENDENT_CIGNA_GROUP_ID_COL              = 'CignaGroupID'
 DEPENDENT_PARENT_SSN_COL				= 'SS'
 DEPENDENT_RELATION_COL					= 'Relationship_Code'
 DEPENDENT_COMPANY_CODE_COL				= 'companycode'
@@ -94,16 +96,20 @@ ISA_AUTH_INFO                       = '          '              # Empty 10 chara
 ISA_SEC_INFO_QUALIFIER              = '00'                      # No Security Information present
 ISA_SEC_INFO                        = '          '              # Empty 10 characters for 00 of I03
 ISA_SENDER_ID_QUALIFIER             = 'ZZ'                      # Interchange ID Qualifiere (MIN/MAX 2)
-ISA_SENDER_ID                       = '------SENDER_ID'         # Interchange Sender ID (MIN/MAX 15)
+ISA_SENDER_ID_CIGNA                 = '621767955ACIGNA'         # Interchange Sender ID (MIN/MAX 15)
+ISA_SENDER_ID_BCBS                  = '621767955ABCBS'         # Interchange Sender ID (MIN/MAX 15)
 ISA_RECEIVER_ID_QUALIFIER           = 'ZZ'                      # Interchange ID Qualifiere (MIN/MAX 2)
-ISA_RECEIVER_ID                     = '----RECEIVER_ID'         # Interchange Receiver ID (MIN/MAX 15)
+ISA_RECEIVER_ID_BCBS                = '06-0303370BCBS'         # Interchange Receiver ID (MIN/MAX 15)
+ISA_RECEIVER_ID_CIGNA               = '06-0303370CIGNA'         # Interchange Receiver ID (MIN/MAX 15)
 ISA_ACK_REQUESTED                   = '1'                       # Code indicating sender's request for an interchange acknowledgment (MIN/MAX 1)
 ISA_USAGE_INDICATOR                 = 'I'                       # Interchange Usage Indicator(MIN/MAX 1): Code indicating whether data enclosed by this interchange envelope is test, production or information (I:Information, P:Production Data, T:Test Data)
 ISA_COMP_ELEM_SEP                   = '>'                       # Component Element Separator (MIN/MAX 1)
 ISA_CONTROL_VERSION_NUMBER          = '00501'                   # Interchange Control Version Number
 # Define Constants variable for the GS Segment
-GS_APP_SENDER_CODE                  = 'SENDER_CODE'             # Application Sender's Code (Min 2/ Max 15)
-GS_APP_RECEIV_CODE                  = 'RECEIVE_CODE'            # Application Receiver's Code (Min 2/ Max 15)
+GS_APP_SENDER_CODE_CIGNA            = '621767955ACIGNA'             # Application Sender's Code (Min 2/ Max 15)
+GS_APP_SENDER_CODE_BCBS             = '621767955ABCBS'             # Application Sender's Code (Min 2/ Max 15)
+GS_APP_RECEIV_CODE_CIGNA            = '06-0303370CIGNA'            # Application Receiver's Code (Min 2/ Max 15)
+GS_APP_RECEIV_CODE_BCBS             = '06-0303370BCBS'            # Application Receiver's Code (Min 2/ Max 15)
 GS_FUN_IDENTI_CODE                  = 'HP'                      # Functional Identifiere Code (BE: Benefit Enrollment and Maintenance (834))
 GS_RES_AGENCY_CODE                  = 'X'                       # Responsible Agency Code (T: TDCC, X: Accredited Standards Committee X12)
 GS_VER_REL_IND_IDENTI_CODE          = '005010X220A1'            # Version / Release / Industry Identifier Code (005010X220A1: ANSI ASC X12 Benefit Enrollment and Maintenance (834) through June 2010)
@@ -130,7 +136,8 @@ N1_CODE_BY_ORGNIZATION              = '94'
 N1_FEDERAL_ID_NUMBER                = 'FI'
 
 SPONSER_NAME 						= 'LBMC Employment Partners LLC'
-SPONSER_ID_NUMBER					= '06-0303370'
+SPONSER_ID_NUMBER_CIGNA				= '06-0303370CIGNA'
+SPONSER_ID_NUMBER_BCBS				= '06-0303370BCBS'
 
 CIGNA_INS_ID_NUM					= '06-0303370'
 BCBS_INS_ID_NUM						= '620427913'

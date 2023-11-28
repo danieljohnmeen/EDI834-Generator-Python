@@ -22,6 +22,7 @@ def load_json_from_sql():
         cursor.execute(query_for_providers)
         providers = cursor.fetchall()
         data_json = []
+       
         for provider in providers:
             enrollees_array = []
             provider_name = provider.provider_name

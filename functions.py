@@ -110,7 +110,7 @@ def generate_GS(control_num, provider_name):
 
 def generate_ST(control_num):
     """Generate the ST segment with the provided control number."""
-    st_segment = f"ST*{ST_TRANS_SET_ID_CODE}*CA{control_num:07}*{ST_IMP_CONV_REFER}~"
+    st_segment = f"ST*{ST_TRANS_SET_ID_CODE}*{control_num:07}*{ST_IMP_CONV_REFER}~"
     return st_segment
 
 
@@ -126,7 +126,15 @@ def generate_N1(entity_id_code, name, id_code_qualifier,identifier):
     return n1_segment
 def generate_segment_from_array(data_array):
     """Generate the segment with the provided array."""
-    result_segment = "*".join(data_array) + "~"
+    
+    # Remove empty strings from the end of the data_array
+    while data_array and not data_array[-1]:
+        data_array.pop()
+    
+    # Trim each element in the array
+    trimmed_array = [element.strip() for element in data_array]
+    
+    result_segment = "*".join(trimmed_array) + "~"
     return result_segment
 def get_student_status_code(status_code):
     """Get Student Status Code with the provided string."""
@@ -233,7 +241,7 @@ def generate_edi_for_person_from_json(provider_name, data, isSelf = True):
         data_ref_segment = generate_segment_from_array(ref_seg_array)
         print(f"REF Segment: {data_ref_segment}")
         segments.append(data_ref_segment)
-    if isSelf == True:
+    if isSelf == True and provider_name != 'CIGNA':
         # DTP Segments for Employment Started
         dtp_seg_array = [
             'DTP',                                      # Segment Name
